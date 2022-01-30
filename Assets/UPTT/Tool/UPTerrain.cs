@@ -7,8 +7,41 @@ using System.Linq;
 [ExecuteInEditMode]
 public class UPTerrain : MonoBehaviour
 {
+    [SerializeField] private Vector2 randomHeightRange = new Vector2(0, 0.1f);
+    [SerializeField] private Terrain terrain;
+    [SerializeField] private TerrainData terrainData;
+    
+    public void RandomTerrain()
+    {
+        Debug.Log("Generating Random Heights");
+
+        var heightMap = terrainData.GetHeights(0, 0,
+            terrainData.heightmapResolution,
+            terrainData.heightmapResolution);
+
+        for (var x = 0; x < terrainData.heightmapResolution; x++)
+        {
+            for (var y = 0; y < terrainData.heightmapResolution; y++)
+            {
+                heightMap[x, y] += UnityEngine.Random.Range(randomHeightRange.x, randomHeightRange.y);
+            }
+        }
+        terrainData.SetHeights(0,0, heightMap);
+    }
+
+    public void ResetTerrain()
+    {
+        Debug.Log("Resetting Terrain");
+
+        var heightMap = new float[terrainData.heightmapResolution, terrainData.heightmapResolution];
+        terrainData.SetHeights(0,0, heightMap);
+    }
+    
     private void Reset()
     {
+        Debug.Log("Initialising Terrain Data");
+        terrain = this.GetComponent<Terrain>();
+        terrainData = terrain.terrainData;
         
         // Serialise the tag manager to create new tags
         SerializedObject tagManager = new SerializedObject(
@@ -55,6 +88,6 @@ public class UPTerrain : MonoBehaviour
         SerializedProperty newTag = tagsProperty.GetArrayElementAtIndex(0);
         newTag.stringValue = tag;
     }
-    
+
     
 }
