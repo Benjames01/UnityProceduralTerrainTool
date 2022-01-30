@@ -7,6 +7,14 @@ using System.Linq;
 [ExecuteInEditMode]
 public class UPTerrain : MonoBehaviour
 {
+    [SerializeField] private Vector2 randomHeightRange = new Vector2(0, 0.1f);
+        
+
+    public void RandomTerrain()
+    {
+        Debug.Log("Generating Random Heights");
+    }
+    
     private void Reset()
     {
         
@@ -55,6 +63,6 @@ public class UPTerrain : MonoBehaviour
         SerializedProperty newTag = tagsProperty.GetArrayElementAtIndex(0);
         newTag.stringValue = tag;
     }
-    
+
     
 }
