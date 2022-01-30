@@ -29,6 +29,16 @@ public class UPTerrainEditor : Editor
         serializedObject.Update();
 
         UPTerrain terrain = (UPTerrain) target;
+        
+        
+        // Show ResetButton
+        GUILayout.Label("Reset Terrain", EditorStyles.boldLabel);
+
+        if (GUILayout.Button("Reset Terrain"))
+        {
+            terrain.ResetTerrain();
+        }
+        
 
         // Random Height Foldout UI
         _showRandom = EditorGUILayout.Foldout(_showRandom, "Random Height");
