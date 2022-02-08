@@ -7,6 +7,7 @@ using System.Linq;
 [ExecuteInEditMode]
 public class UPTerrain : MonoBehaviour
 {
+<<<<<<< HEAD
     
     // Range for map generation based on Unity's Random
     [SerializeField] private Vector2 unityRandomRange = new Vector2(0, 0.1f);
@@ -27,15 +28,29 @@ public class UPTerrain : MonoBehaviour
         Debug.Log("Generating Random Heights");
 
         // Create a new heightmap with dimension from our terrain data's heightmap resolution (will always be square i.e 1024x1024)
+=======
+    [SerializeField] private Vector2 randomHeightRange = new Vector2(0, 0.1f);
+    [SerializeField] private Terrain terrain;
+    [SerializeField] private TerrainData terrainData;
+    
+    public void RandomTerrain()
+    {
+        Debug.Log("Generating Random Heights");
+
+>>>>>>> UPTT-2-Develop
         var heightMap = terrainData.GetHeights(0, 0,
             terrainData.heightmapResolution,
             terrainData.heightmapResolution);
 
+<<<<<<< HEAD
         // Iterate through all positions in the heightmap and give them a value between our unityRandomRange.x and .y
+=======
+>>>>>>> UPTT-2-Develop
         for (var x = 0; x < terrainData.heightmapResolution; x++)
         {
             for (var y = 0; y < terrainData.heightmapResolution; y++)
             {
+<<<<<<< HEAD
                 heightMap[x, y] += UnityEngine.Random.Range(unityRandomRange.x, unityRandomRange.y);
             }
         }
@@ -72,6 +87,15 @@ public class UPTerrain : MonoBehaviour
     
     // Reset terrain to a zeroed out heightmap
     public void ResetTerrainHeightMap()
+=======
+                heightMap[x, y] += UnityEngine.Random.Range(randomHeightRange.x, randomHeightRange.y);
+            }
+        }
+        terrainData.SetHeights(0,0, heightMap);
+    }
+
+    public void ResetTerrain()
+>>>>>>> UPTT-2-Develop
     {
         Debug.Log("Resetting Terrain");
 
@@ -79,6 +103,7 @@ public class UPTerrain : MonoBehaviour
         terrainData.SetHeights(0,0, heightMap);
     }
     
+<<<<<<< HEAD
     
     /**
      * Reset is called when the user hits the Reset button in the Inspector's context menu or when adding the component the first time.
@@ -89,6 +114,11 @@ public class UPTerrain : MonoBehaviour
     {
         Debug.Log("Initialising Terrain Data");
         // Set the terrain to the Terrain component on this object and assign our terrain data
+=======
+    private void Reset()
+    {
+        Debug.Log("Initialising Terrain Data");
+>>>>>>> UPTT-2-Develop
         terrain = this.GetComponent<Terrain>();
         terrainData = terrain.terrainData;
         
