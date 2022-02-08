@@ -7,29 +7,71 @@ using System.Linq;
 [ExecuteInEditMode]
 public class UPTerrain : MonoBehaviour
 {
-    [SerializeField] private Vector2 randomHeightRange = new Vector2(0, 0.1f);
+    
+    // Range for map generation based on Unity's Random
+    [SerializeField] private Vector2 unityRandomRange = new Vector2(0, 0.1f);
+    
+    // Data for manipulating our terrain
     [SerializeField] private Terrain terrain;
     [SerializeField] private TerrainData terrainData;
+
+    // Height map parameters, the texture and scale factor
+    [SerializeField] private Texture2D heightMapTexture;
+    // Scale factor allows for stretching the heightmap to match our terrain
+    [SerializeField] private Vector3 heightMapScale = Vector3.one;
     
-    public void RandomTerrain()
+    
+    // Generate a height map using Unity's Random.Range function
+    public void UnityRandomHeightMap()
     {
         Debug.Log("Generating Random Heights");
 
+        // Create a new heightmap with dimension from our terrain data's heightmap resolution (will always be square i.e 1024x1024)
         var heightMap = terrainData.GetHeights(0, 0,
             terrainData.heightmapResolution,
             terrainData.heightmapResolution);
 
+        // Iterate through all positions in the heightmap and give them a value between our unityRandomRange.x and .y
         for (var x = 0; x < terrainData.heightmapResolution; x++)
         {
             for (var y = 0; y < terrainData.heightmapResolution; y++)
             {
-                heightMap[x, y] += UnityEngine.Random.Range(randomHeightRange.x, randomHeightRange.y);
+                heightMap[x, y] += UnityEngine.Random.Range(unityRandomRange.x, unityRandomRange.y);
             }
         }
+        
+        // After generating the heightmap, apply it to the terrain. This will update instantly in the editor.
         terrainData.SetHeights(0,0, heightMap);
     }
+    
+    // Load a heightmap from our heightMapTexture
+    public void LoadHeightMapFromTexture()
+    {
+        var heightMap = new float[terrainData.heightmapResolution, terrainData.heightmapResolution];
 
-    public void ResetTerrain()
+        // Iterate 
+        for (int x = 0; x < terrainData.heightmapResolution; x++)
+        {
+            for (int y = 0; y < terrainData.heightmapResolution; y++)
+            {
+                // assign our heightmap x & y adjusted by our scale
+                var heightMapX = (int) (x * heightMapScale.x);
+                var heightMapY = (int) (y * heightMapScale.y);
+                
+                /*
+                 * Grab the pixel data from the texture and scale it
+                 * Only care about the grayscale value for our maps
+                 */
+                heightMap[x, y] = heightMapTexture.GetPixel(heightMapX, heightMapY).grayscale * heightMapScale.z;
+            }
+        }
+        
+        // Currently overriding the current heightmap with the loaded one. TODO: Implement blend mode (i.e additive, lerp, invert)
+        terrainData.SetHeights(0, 0, heightMap);
+    }
+    
+    // Reset terrain to a zeroed out heightmap
+    public void ResetTerrainHeightMap()
     {
         Debug.Log("Resetting Terrain");
 
@@ -37,9 +79,16 @@ public class UPTerrain : MonoBehaviour
         terrainData.SetHeights(0,0, heightMap);
     }
     
+    
+    /**
+     * Reset is called when the user hits the Reset button in the Inspector's context menu or when adding the component the first time.
+     * This function is only called in editor mode. Reset is most commonly used to give good default values in the Inspector.
+     * DOCS: https://docs.unity3d.com/ScriptReference/MonoBehaviour.Reset.html
+     */
     private void Reset()
     {
         Debug.Log("Initialising Terrain Data");
+        // Set the terrain to the Terrain component on this object and assign our terrain data
         terrain = this.GetComponent<Terrain>();
         terrainData = terrain.terrainData;
         
@@ -60,7 +109,7 @@ public class UPTerrain : MonoBehaviour
         this.gameObject.tag = "UPTerrain";
     }
 
-    private void AddTag(SerializedProperty tagsProperty, string tag)
+    private static void AddTag(SerializedProperty tagsProperty, string tag)
     {
         bool isFound = false;
         
