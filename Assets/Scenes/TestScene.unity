@@ -331,17 +331,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ee17b7d76178041975deffeb43ed83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unityRandomRange: {x: 0, y: 0.1}
+  randomHeightRange: {x: 0, y: 0.01}
   terrain: {fileID: 1187680786}
   terrainData: {fileID: 15600000, guid: 9386a3a8db34f8844b554f630ba0bc78, type: 2}
-  replaceHeightmap: 1
-  heightMapTexture: {fileID: 0}
+  heightMapImage: {fileID: 0}
   heightMapScale: {x: 1, y: 1, z: 1}
-  seed: 47044
-  perlinScaleFactor: {x: 0.02, y: 0.02}
-  perlinHeightScale: 0.16
-  octaves: 3
-  persistence: 0.48
 --- !u!154 &1187680785
 TerrainCollider:
   m_ObjectHideFlags: 0
