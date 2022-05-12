@@ -33,16 +33,19 @@ namespace UPTT.Tool.Utils
 			return value / maxValue;
 		}
 
+		// Gets the value at the x,y coordinates of a vector 2 in a float[,]
 		private static float GetHeightMapValueAtVec2(float[,]  heightMap, Vector2 coord)
 		{
 			return heightMap[(int)coord.x, (int)coord.y];
 		}
 
+		// Calculate the average value of a collection of floats
 		private static float GetAverage(IReadOnlyCollection<float> toAverage)
 		{
 			return toAverage.Sum() / toAverage.Count;
 		}
 
+		// Gets the values in heightmap at each x,y in toAverage, then returns the average of those values
 		private static float AddAndAverage(float[,] heightMap, IEnumerable<Vector2> toAverage)
 		{
 			var floatsToAverage = toAverage.Select(coord => GetHeightMapValueAtVec2(heightMap, coord)).ToList();
@@ -50,16 +53,19 @@ namespace UPTT.Tool.Utils
 			return GetAverage(floatsToAverage);
 		}
 
+		// Check if x, y is within the bounds of float[,] array
 		private static bool CheckIfIn2DArrayBounds(this float[,] array, int x, int y)
 		{
 			return x >= array.GetLowerBound(0) && y >= array.GetLowerBound(1) && x <= array.GetUpperBound(0) && y <= array.GetUpperBound(1);
 		}
 		
+		// Returns a list of all positions in toCheck that are in bounds in float[,] array
 		private static IEnumerable<Vector2> CheckInBoundsAddToList(this float[,] array, IEnumerable<Vector2> toCheck)
 		{
 			return toCheck.Where(vec => CheckIfIn2DArrayBounds(array, (int) vec.x, (int) vec.y)).ToList();
 		}
 
+		// Creates a list of all the potential neighbouring positions at x, y 
 		private static IEnumerable<Vector2> GetPotentialCoords(int x, int y)
 		{
 			var centreLeft = new Vector2(x - 1, y);
@@ -85,16 +91,22 @@ namespace UPTT.Tool.Utils
 			return list;
 		}
 		
+		// Applies averaging to a float[,] array
 		public static float[,] BlurAlgorithm(float[,] heightMap, int size)
 		{
+			// Iterate through each point in the array
 			for (var i = 0; i < size; i++)
 			{
 				for (var j = 0; j < size; j++)
 				{
+					// Calculate the neighbouring coords
 					var toCheck = GetPotentialCoords(j, i);
+					// Check which coords are in bounds
 					var inBounds = CheckInBoundsAddToList(heightMap, toCheck);
+					// Calculate the average of those that are in bounds
 					var average = AddAndAverage(heightMap, inBounds);
 
+					// Assign the current position to the calculated average
 					heightMap[j, i] = average;
 				}
 			}

@@ -326,7 +326,6 @@ public class UPTerrain : MonoBehaviour
     #endregion
 
     #region WeightMaps
-
     public void ApplyWeightMaps()
     {
         Debug.Log("Applying weightmaps..");
@@ -554,8 +553,6 @@ public class UPTerrain : MonoBehaviour
     #endregion
 
     #region Unity
-
-    
     /**
      * Used to create a progress bar displaying Progress
      * Call EditorUtility.ClearProgressBar() when finished
@@ -563,11 +560,11 @@ public class UPTerrain : MonoBehaviour
     private void CreateProgressBar(string title, float total)
     {
         var progressPercent = 0f;
-        if (progress == 0)
+        if (progress == 0 || total == 0)
         {
             EditorUtility.DisplayProgressBar(title, "Progress", progress);
         }
-        else
+        else // Only calculate progress percent if not dividing by 0
         {
             progressPercent = (progress / total);
             EditorUtility.DisplayProgressBar(title, "Progress", progressPercent);
@@ -578,10 +575,7 @@ public class UPTerrain : MonoBehaviour
             EditorUtility.ClearProgressBar();
         }
     }
-    
-    
-    
-    
+   
     /**
      * Reset is called when the user hits the Reset button in the Inspector's context menu or when adding the component the first time.
      * This function is only called in editor mode. Reset is most commonly used to give good default values in the Inspector.
@@ -593,51 +587,8 @@ public class UPTerrain : MonoBehaviour
         // Set the terrain to the Terrain component on this object and assign our terrain data
         terrain = this.GetComponent<Terrain>();
         terrainData = terrain.terrainData;
-        
-        // Serialise the tag manager to create new tags
-        var tagManager = new SerializedObject(
-            AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
-
-        var tagsProperty = tagManager.FindProperty("tags");
-        
-        AddTag(tagsProperty, "UPTerrain");
-        AddTag(tagsProperty, "UPCloud");
-        AddTag(tagsProperty, "UPWater");
-        
-        
-        // Apply modifications to the tag store
-        tagManager.ApplyModifiedProperties();
-
-        this.gameObject.tag = "UPTerrain";
     }
-    private static void AddTag(SerializedProperty tagsProperty, string tag)
-    {
-        var isFound = false;
-        
-        // Check to see if tag is already made
 
-
-        if (tagsProperty == null)
-        {
-            Debug.Log("TagsProperty is null");
-            return;
-        }
-        
-        for (var i = 0; i < tagsProperty.arraySize; i++)
-        {
-            var checkTag = tagsProperty.GetArrayElementAtIndex(i);
-            if (!checkTag.stringValue.Equals(tag)) continue;
-            isFound = true;
-            break;
-        }
-        
-        // If tag hasn't been found add it
-        if (isFound) return;
-        Debug.Log("Adding: " + tag);
-        tagsProperty.InsertArrayElementAtIndex(0);
-        var newTag = tagsProperty.GetArrayElementAtIndex(0);
-        newTag.stringValue = tag;
-    }
     #endregion
 
     

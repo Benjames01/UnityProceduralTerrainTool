@@ -1,9 +1,7 @@
 using System;
 using EditorGUITable;
 using UnityEditor;
-using UnityEditor.Experimental.TerrainAPI;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UPTT.Tool.Generator;
 
 
@@ -29,7 +27,7 @@ public class UPTerrainEditor : Editor
     // Editor Foldouts
     private bool _displayBlur, _displayRandom, _displayHeightMapProperties,
         _displayPerlin, _displayfBM, _displayVoronoi, _displayDSA, _displayErode,
-        _displayWeightMap, _displaySave = false;
+        _displayWeightMap, _displaySave;
 
     private SerializedProperty _erosionMethod;
     private Erosion.IErosion _erosion;
