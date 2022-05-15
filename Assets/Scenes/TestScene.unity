@@ -253,7 +253,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.06087574, g: 0.6792453, b: 0.07646153, a: 0}
+  m_BackGroundColor: {r: 0.1550819, g: 0.16037738, b: 0.15518309, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -267,7 +267,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 2000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -293,13 +293,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.2670892, y: -0, z: -0, w: 0.96367186}
-  m_LocalPosition: {x: 477.8, y: 213.4, z: -156.8}
+  m_LocalRotation: {x: 0.21810484, y: 0.37186682, z: -0.09034198, w: 0.89776593}
+  m_LocalPosition: {x: -157, y: 343, z: -133}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 30.982, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 27.31, y: 45, z: 0}
 --- !u!1 &1187680783
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,9 +366,9 @@ MonoBehaviour:
     seed: 0
     canDelete: 0
   weightMaps:
-  - diffuseTexture: {fileID: 2800000, guid: 2a92ec3b24546c447ae2a5f5da6f3db8, type: 3}
-    normalsTexture: {fileID: 2800000, guid: aeff12fbe9fe2384bae4d1b436607b55, type: 3}
-    heights: {x: 0, y: 0.2}
+  - diffuseTexture: {fileID: 2800000, guid: ef1fbc9bae2718d4a8dbe2baaa01399c, type: 3}
+    normalsTexture: {fileID: 2800000, guid: f3b2a952874cda74583658ed78a08ef2, type: 3}
+    heights: {x: 0, y: 0.03}
     gradients: {x: 0, y: 90}
     metallic: 0
     smoothness: 0
@@ -376,9 +376,29 @@ MonoBehaviour:
     offset: {x: 0, y: 0}
     size: {x: 25, y: 25}
     canDelete: 0
-  - diffuseTexture: {fileID: 2800000, guid: 216e2729631e003468211108545a08f1, type: 3}
-    normalsTexture: {fileID: 2800000, guid: 219386670151bc542a3b2fd69819e13e, type: 3}
-    heights: {x: 0, y: 1}
+  - diffuseTexture: {fileID: 2800000, guid: 9875bf7345d4ac04ab35f3b9ed63a954, type: 3}
+    normalsTexture: {fileID: 2800000, guid: 6711a6f408dca5b41b938ec249d8d444, type: 3}
+    heights: {x: 0.03, y: 0.15}
+    gradients: {x: 0, y: 90}
+    metallic: 0
+    smoothness: 0
+    specular: {r: 0, g: 0, b: 0, a: 0}
+    offset: {x: 0, y: 0}
+    size: {x: 25, y: 25}
+    canDelete: 0
+  - diffuseTexture: {fileID: 2800000, guid: 573c7bc99dcbc0f4ea88b3ac63b42402, type: 3}
+    normalsTexture: {fileID: 2800000, guid: c138e91626b4607499e005102913a875, type: 3}
+    heights: {x: 0.3, y: 0.6}
+    gradients: {x: 0, y: 90}
+    metallic: 0
+    smoothness: 0
+    specular: {r: 0, g: 0, b: 0, a: 0}
+    offset: {x: 0, y: 0}
+    size: {x: 25, y: 25}
+    canDelete: 0
+  - diffuseTexture: {fileID: 2800000, guid: 083decf4ef7144f4bb014384ac1044b0, type: 3}
+    normalsTexture: {fileID: 2800000, guid: c138e91626b4607499e005102913a875, type: 3}
+    heights: {x: 0.15, y: 0.3}
     gradients: {x: 0, y: 90}
     metallic: 0
     smoothness: 0

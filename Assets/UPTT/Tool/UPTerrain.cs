@@ -40,12 +40,12 @@ public class UPTerrain : MonoBehaviour
     [SerializeField] private Vector3 heightMapScale = Vector3.one;
     
     // Perlin noise parameters
+    // TODO: replace with single perlinNoiseSettings
     [SerializeField] private int seed;
     [SerializeField] private Vector2 perlinScaleFactor = new Vector2(0.01f,0.01f);
     [SerializeField] private float perlinHeightScale = 0.07f;
     [SerializeField] private int octaves = 4;
     [SerializeField] private float persistence = 0.5f;
-    
     
     // Perlin noise parameters List
     [SerializeField] private List<PerlinNoiseSettings> perlinNoiseSettingsList
@@ -97,7 +97,7 @@ public class UPTerrain : MonoBehaviour
     {
         var heightMap = GetHeightMap();
         
-        // Iterate through all positions in the heightmap and give them a value between our unityRandomRange.x and .y
+        // Iterate through all positions in the heightmap and give them a perlin value
         for (var x = 0; x < terrainData.heightmapResolution; x++)
         {
             for (var y = 0; y < terrainData.heightmapResolution; y++)
@@ -372,7 +372,7 @@ public class UPTerrain : MonoBehaviour
         terrainData.terrainLayers = newTerrainLayers;
         
         var hMap = GetHeightMap();
-        // Create new float[,] to store the weightmaps to apply
+        // Create new 3D float[,,] to store the weightmaps to apply
         var appliedWeightMaps =
             new float[terrainData.alphamapWidth, terrainData.alphamapHeight, terrainData.alphamapLayers];
         
@@ -381,8 +381,8 @@ public class UPTerrain : MonoBehaviour
         {
             for (var j = 0; j < terrainData.alphamapWidth; j++)
             {
-                var weights = new float[terrainData.alphamapLayers];
-                // Iterate through the weightmaps
+                var blendValues = new float[terrainData.alphamapLayers];
+                // Iterate through the weight maps
                 for (var k = 0; k < count; k++)
                 {
                     
@@ -390,9 +390,6 @@ public class UPTerrain : MonoBehaviour
                     var blendModifier = 0.01 + 0.01 * Mathf.PerlinNoise(j * 0.01f, i * 0.01f);
 
                     // Get gradient at current WeightMap position
-                    // var gradient = Maths.CalculateGradient(hMap, j, i, terrainData.heightmapResolution,
-                    //     terrainData.heightmapResolution);
-
                     var gradient = terrainData.GetSteepness(i / (float) terrainData.alphamapHeight,
                         j / (float) terrainData.alphamapWidth);
                     
@@ -400,14 +397,14 @@ public class UPTerrain : MonoBehaviour
                     if (hMap[j, i] >= weightMaps[k].MINWeight - blendModifier && hMap[j, i] <= weightMaps[k].MAXWeight + blendModifier
                         && (gradient >= weightMaps[k].MINGradient && gradient <= weightMaps[k].MAXGradient))
                     {
-                        weights[k] = 1;
+                        blendValues[k] = 1;
                     }
                 }
 
-                weights = Maths.NormaliseArray(weights);
-                for (var k = 0; k < weights.Length; k++)
+                blendValues = Maths.NormaliseArray(blendValues);
+                for (var k = 0; k < blendValues.Length; k++)
                 {
-                    appliedWeightMaps[j, i, k] = weights[k];
+                    appliedWeightMaps[j, i, k] = blendValues[k];
                 }
             }
         }
