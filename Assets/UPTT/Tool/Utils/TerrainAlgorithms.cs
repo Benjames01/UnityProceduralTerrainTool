@@ -100,7 +100,9 @@ namespace UPTT.Tool.Utils
 				for (var j = 0; j < size; j++)
 				{
 					// Calculate the neighbouring coords
-					var toCheck = GetPotentialCoords(j, i);
+					var toCheck = 
+						
+						GetPotentialCoords(j, i);
 					// Check which coords are in bounds
 					var inBounds = CheckInBoundsAddToList(heightMap, toCheck);
 					// Calculate the average of those that are in bounds

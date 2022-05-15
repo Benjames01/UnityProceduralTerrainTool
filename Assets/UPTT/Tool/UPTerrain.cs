@@ -92,11 +92,30 @@ public class UPTerrain : MonoBehaviour
         terrainData.SetHeights(0,0, heightMap);
     }
 
+
+    public void originalperlin()
+    {
+        var heightMap = GetHeightMap();
+        
+        // Iterate through all positions in the heightmap and give them a value between our unityRandomRange.x and .y
+        for (var x = 0; x < terrainData.heightmapResolution; x++)
+        {
+            for (var y = 0; y < terrainData.heightmapResolution; y++)
+            {
+                heightMap[x, y] = Mathf.PerlinNoise((x + seed) * perlinScaleFactor.x, (y + seed) * perlinScaleFactor.y);
+            }
+        }
+        terrainData.SetHeights(0,0, heightMap);
+    }
+    
     public void PerlinHeightmap()
     {
-        // Create a new heightmap with dimension from our terrain data's heightmap resolution (will always be square i.e 1024x1024)
+        /*
+         * Create a new heightmap with dimension from our terrain data's heightmap
+         * resolution (will always be square i.e 1024x1024)
+         */
         var heightMap = GetHeightMap();
-
+        
         // Iterate through all positions in the heightmap and give them a value between our unityRandomRange.x and .y
         for (var x = 0; x < terrainData.heightmapResolution; x++)
         {
@@ -182,7 +201,7 @@ public class UPTerrain : MonoBehaviour
                                                               Mathf.Pow(scaled, voronoiSettings.dropoffAmount) * voronoiSettings.falloffAmount),
                         VoronoiSettings.FalloffType.Combine => (peakHeight - (scaled * voronoiSettings.falloffAmount)) -
                                                                (Mathf.Pow(scaled, voronoiSettings.dropoffAmount) * voronoiSettings.falloffAmount),
-                        VoronoiSettings.FalloffType.Linear => (peakHeight - (voronoiSettings.falloffAmount * maximumLength)),
+                        VoronoiSettings.FalloffType.Linear => (peakHeight - (voronoiSettings.falloffAmount * scaled)),
                         VoronoiSettings.FalloffType.PowSin => (peakHeight - Mathf.Pow(scaled * 3, voronoiSettings.falloffAmount))-Mathf.Sin(scaled*2f*3.14f)/voronoiSettings.dropoffAmount,
                         VoronoiSettings.FalloffType.Plateau => peakHeight - Mathf.Sin(scaled)
                                                                  * Mathf.Pow(scaled, (10 - voronoiSettings.falloffAmount))
@@ -233,7 +252,6 @@ public class UPTerrain : MonoBehaviour
                                   hMap[(int) cornerPos.x, (int) cornerPos.y]) / 4 +  Maths.RandomRange(minHeight, maxHeight);
                     
                     hMap[(int) midPos.x, (int) midPos.y] = height;
-
                 }
             }
 
@@ -245,7 +263,7 @@ public class UPTerrain : MonoBehaviour
                     midPos = new Vector2( i + square / 2, j + square / 2);
 
                     // Calculate midpoint positions
-                    Vector4 squareData; // x: Midpoint Left X, y: Midpoint Right X, z: Midpoint Upper Y, w: Midpoint Lower Y; Used for square step
+                    Vector4 squareData; // x: Midpoint Left X, y: Midpoint Right X, z: Midpoint Upper Y, w: Midpoint Lower Y;
                     squareData.x = midPos.x - square; //    x: Midpoint Left X
                     squareData.y = midPos.x + square; //    y: Midpoint Right X
 
@@ -300,8 +318,6 @@ public class UPTerrain : MonoBehaviour
             maxHeight *= dampeningEffect;
         }
         
-
-      
         terrainData.SetHeights(0, 0, hMap);
     }
 
@@ -406,7 +422,7 @@ public class UPTerrain : MonoBehaviour
     }
     public void DeleteWeightMap()
     {
-        weightMaps = DeleteFromList(weightMaps);
+        weightMaps = Maths.DeleteFromList(weightMaps);
     }
     #endregion
 
@@ -415,7 +431,7 @@ public class UPTerrain : MonoBehaviour
     public void PerlinSuperposition()
     {
         var heightMap = Heightmap();
-
+        
         // Iterate through each pair of x,y co-ordinates
         for (var x = 0; x < terrainData.heightmapResolution; x++)
         {
@@ -437,38 +453,18 @@ public class UPTerrain : MonoBehaviour
         terrainData.SetHeights(0, 0, heightMap);
     }
     public void CreateNewSettings()
+    
     {
         perlinNoiseSettingsList.Add(new PerlinNoiseSettings());
     }
     public void DeleteSettings()
     {
-        perlinNoiseSettingsList = DeleteFromList(perlinNoiseSettingsList);
+        perlinNoiseSettingsList = Maths.DeleteFromList(perlinNoiseSettingsList);
     }
     
-    // Generic function for removing items from list and replacing element if empty (new() is needed to allow calling T constructor)
-    private static List<T> DeleteFromList<T>(List<T> list) where T : IDeletable, new()
-    {
-        // Iterate through all the settings that have been marked for deletion and remove them
-        foreach (var element in list.Reverse<T>()
-            .Where(element => element.ToRemove))
-        {
-            list.Remove(element);
-        }
-        
-        // If no settings remain, add one back
-        if(list.Count == 0) list.Add(new T());
-        
-        return list;
-    }
     #endregion
     
     #region HeightmapUtils
-
-    public int GetTerrainSize()
-    {
-        return terrainData.heightmapResolution;
-    }
-    
     public int GetTerrainAlphaMapSize()
     {
         return terrainData.alphamapResolution;
@@ -478,10 +474,6 @@ public class UPTerrain : MonoBehaviour
     {
         return squareData.x <= 0 || squareData.w <= 0
                                  || squareData.y >= size - 1 || squareData.z >= size - 1;
-
-        // return (!(0 >= squareData.x)) && (!(0 >= squareData.w)) &&
-        //        
-        //        (!(size - 1 <= squareData.y)) && (!(size - 1 <= squareData.z));
     }
     
     public TerrainData GetTerrainData()
@@ -591,5 +583,7 @@ public class UPTerrain : MonoBehaviour
 
     #endregion
 
-    
+
+
+
 }

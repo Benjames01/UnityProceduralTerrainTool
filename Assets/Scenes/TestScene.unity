@@ -347,8 +347,8 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.06087574, g: 0.6792453, b: 0.07646153, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -388,13 +388,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.2670892, y: -0, z: -0, w: 0.96367186}
+  m_LocalPosition: {x: 477.8, y: 213.4, z: -156.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30.982, y: 0, z: 0}
 --- !u!1 &1187680783
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,11 +426,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ee17b7d76178041975deffeb43ed83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blurIterations: 1
+  blurIterations: 6
   unityRandomRange: {x: 0, y: 0.1}
   terrain: {fileID: 1187680786}
   terrainData: {fileID: 15600000, guid: 9386a3a8db34f8844b554f630ba0bc78, type: 2}
-  replaceHeightmap: 0
+  replaceHeightmap: 1
   heightMapTexture: {fileID: 0}
   heightMapScale: {x: 1, y: 1, z: 1}
   seed: 48569
@@ -463,23 +463,23 @@ MonoBehaviour:
   weightMaps:
   - diffuseTexture: {fileID: 2800000, guid: 2a92ec3b24546c447ae2a5f5da6f3db8, type: 3}
     normalsTexture: {fileID: 2800000, guid: aeff12fbe9fe2384bae4d1b436607b55, type: 3}
+    heights: {x: 0, y: 0.2}
+    gradients: {x: 0, y: 90}
     metallic: 0
     smoothness: 0
     specular: {r: 0, g: 0, b: 0, a: 0}
     offset: {x: 0, y: 0}
     size: {x: 25, y: 25}
-    minWeight: 0
-    maxWeight: 0.2
     canDelete: 0
   - diffuseTexture: {fileID: 2800000, guid: 216e2729631e003468211108545a08f1, type: 3}
     normalsTexture: {fileID: 2800000, guid: 219386670151bc542a3b2fd69819e13e, type: 3}
+    heights: {x: 0, y: 0.2}
+    gradients: {x: 0, y: 90}
     metallic: 0
     smoothness: 0
     specular: {r: 0, g: 0, b: 0, a: 0}
     offset: {x: 0, y: 0}
     size: {x: 25, y: 25}
-    minWeight: 0.1
-    maxWeight: 0.5
     canDelete: 0
   voronoiSettings:
     numMountains: 0
@@ -493,6 +493,7 @@ MonoBehaviour:
     MinHeight: -2
     DampenerAmount: 2.67
     RoughnessExponent: 1.13
+  erosionMethod: 0
 --- !u!154 &1187680785
 TerrainCollider:
   m_ObjectHideFlags: 0

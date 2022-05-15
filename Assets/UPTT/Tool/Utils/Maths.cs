@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Schema;
 using UnityEngine;
+using UPTT.Tool.Generator;
 
 namespace UPTT.Tool.Utils
 {
@@ -122,6 +125,23 @@ namespace UPTT.Tool.Utils
 			value.x = Mathf.Clamp(value.x, min, max);
 			value.y = Mathf.Clamp(value.y, min, max);
 			return value;
+		}
+		
+		// Generic function for removing items from list and replacing element if empty
+		// (new() is needed to allow calling T constructor)
+		public static List<T> DeleteFromList<T>(List<T> list) where T : IDeletable, new()
+		{
+			// Iterate through all the settings that have been marked for deletion and remove them
+			foreach (var element in list.Reverse<T>()
+				.Where(element => element.ToRemove))
+			{
+				list.Remove(element);
+			}
+        
+			// If no settings remain, add one back
+			if(list.Count == 0) list.Add(new T());
+        
+			return list;
 		}
 	}
 }
